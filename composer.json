@@ -1,0 +1,32 @@
+{
+    "name": "eshopera/eshopera",
+    "description": "Open source CMS framework written in Phalcon PHP",
+    "type": "project",
+    "keywords": [
+        "eshopera",
+        "open-source",
+        "cms",
+        "framework",
+        "phalcon",
+        "php"
+    ],
+    "license": "BSD-3-Clause",
+    "authors": [
+        {
+            "name": "David Hubner",
+            "email": "david.hubner@gmail.com",
+            "homepage": "https://github.com/davihu"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/davihu/eshopera/issues",
+        "source": "https://github.com/davihu/eshopera"
+    },
+    "require": {
+        "php": "^7.0",
+        "davihu/phalcon-ext": "@dev"
+    },
+    "require-dev": {
+
+    }
+}
