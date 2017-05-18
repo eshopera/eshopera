@@ -1,3 +1,5 @@
+/config/app.development.json
+/config/app.production.json
 /nbproject/
 /vendor/
 /composer.lock
