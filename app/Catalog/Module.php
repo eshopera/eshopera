@@ -7,17 +7,14 @@
  * Written by David Hubner <david.hubner@gmail.com>
  */
 
-namespace Eshopera\Application;
+namespace Eshopera\Catalog;
 
-use Eshopera\ApplicationInterface;
-use Phalcon\Mvc\Application;
+use Eshopera\Core\Lib\Application\BaseModule;
 
 /**
- * Backend aka admin application
+ * Product catalog module
  */
-class BackendApplication extends Application implements ApplicationInterface
+class Module extends BaseModule
 {
 
-    use ConfigTrait;
-    use ServicesTrait;
 }

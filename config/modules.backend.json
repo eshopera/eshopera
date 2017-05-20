@@ -1,0 +1,7 @@
+{
+    "catalog": {
+        "class": "Eshopera\\Catalog\\Module"
+    },
+    "media": {
+    }
+}

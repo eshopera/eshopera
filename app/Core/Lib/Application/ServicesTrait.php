@@ -7,9 +7,9 @@
  * Written by David Hubner <david.hubner@gmail.com>
  */
 
-namespace Eshopera\Application;
+namespace Eshopera\Core\Lib\Application;
 
-use Eshopera\Exception\ApplicationException;
+use Eshopera\Core\Lib\Exception\ApplicationException;
 
 /**
  * Application services registration
@@ -22,13 +22,13 @@ trait ServicesTrait
      */
     public function registerServices()
     {
-        $configPath = $this->rootDir . '/config/services.json';
+        $configPath = $this->rootDir . '/config/services.' . self::CONTEXT . '.json';
 
         if (!is_file($configPath)) {
-            throw new ApplicationException('Configuration "config/services.json" does not exist');
+            throw new ApplicationException('Configuration "config/services.' . self::CONTEXT . '.json" does not exist');
         }
 
-        $config = json_decode($configPath, true);
+        $config = json_decode(file_get_contents($configPath), true);
 
         if (!is_array($config)) {
             throw new ApplicationException('Parse error for configuration "config/services.json"');
@@ -38,8 +38,8 @@ trait ServicesTrait
             $this->registerInternalServices($config['shared'], true);
         }
 
-        if (!empty($config['regular'])) {
-            $this->registerInternalServices($config['regular'], false);
+        if (!empty($config['instance'])) {
+            $this->registerInternalServices($config['instance'], false);
         }
 
         return $this;

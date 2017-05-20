@@ -7,11 +7,14 @@
  * Written by David Hubner <david.hubner@gmail.com>
  */
 
-namespace Eshopera\Exception;
+namespace Eshopera\Core\Model;
 
-use Exception;
+use Eshopera\Core\Lib\Mvc\Model\BaseModel;
 
-class ApplicationException extends Exception
+/**
+ * User model
+ */
+class User extends BaseModel
 {
-
+    
 }

@@ -7,10 +7,10 @@
  * Written by David Hubner <david.hubner@gmail.com>
  */
 
-namespace Eshopera\Application;
+namespace Eshopera\Core\Lib\Application;
 
-use Eshopera\ApplicationInterface;
-use Eshopera\Exception\ApplicationException;
+use Eshopera\Core\Lib\ApplicationInterface;
+use Eshopera\Core\Lib\Exception\ApplicationException;
 use Phalcon\Config\Adapter\Json;
 
 /**
@@ -28,6 +28,19 @@ trait ConfigTrait
      * @var string
      */
     private $rootDir;
+
+    /**
+     * @var \Phalcon\Config
+     */
+    private $config;
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getContext()
+    {
+        return self::CONTEXT;
+    }
 
     /**
      * {@inheritdoc}
@@ -54,8 +67,21 @@ trait ConfigTrait
         }
 
         $this->env = $env;
+        $this->errorReporting();
 
         return $this;
+    }
+
+    /**
+     * Sets error reporting level depending current environment
+     */
+    private function errorReporting()
+    {
+        if ($this->env == ApplicationInterface::ENV_DEVELOPMENT || $this->env == ApplicationInterface::ENV_TESTING) {
+            error_reporting(E_ALL | E_STRICT);
+            ini_set('display_errors', 'On');
+            ini_set('display_startup_errors', 'On');
+        }
     }
 
     /**
@@ -78,37 +104,34 @@ trait ConfigTrait
     /**
      * {@inheritdoc}
      */
-    public function configure()
+    public function getConfig()
     {
-        $this->errorReporting();
-        $this->loadConfig();
+        return $this->config;
     }
 
-    private function errorReporting()
+    /**
+     * {@inheritdoc}
+     */
+    public function loadConfig(string $configDir = null)
     {
-        if ($this->env == ApplicationInterface::ENV_DEVELOPMENT || $this->env == ApplicationInterface::ENV_TESTING) {
-            error_reporting(E_ALL | E_STRICT);
-            ini_set('display_errors', 'On');
-            ini_set('display_startup_errors', 'On');
+        if ($configDir) {
+            $configPath = rtrim($configDir, '/') . '/app.json';
+            $envConfigPath = rtrim($configDir, '/') . '/app.' . $this->env . '.json';
+        } else {
+            $configPath = $this->rootDir . '/config/app.json';
+            $envConfigPath = $this->rootDir . '/config/app.' . $this->env . '.json';
         }
-    }
-
-    private function loadConfig()
-    {
-        $configPath = $this->rootDir . '/config/app.json';
 
         if (!is_file($configPath)) {
             throw new ApplicationException('Configuration "config/app.json" does not exist');
         }
 
-        $config = new Json($configPath);
-
-        $envConfigPath = $this->rootDir . '/config/app.' . $this->env . '.json';
+        $this->config = new Json($configPath);
 
         if (is_file($envConfigPath)) {
-            $config->merge(new Json($envConfigPath));
+            $this->config->merge(new Json($envConfigPath));
         }
 
-        $this->getDI()->set('config', $config, true);
+        return $this;
     }
 }

@@ -9,23 +9,28 @@
 
 use Phalcon\Loader;
 use Phalcon\Di\FactoryDefault;
-use Eshopera\ApplicationInterface;
-use Eshopera\Application\BackendApplication;
+use Phalcon\Config\Adapter\Json;
+use Eshopera\Core\Lib\ApplicationInterface;
+use Eshopera\Core\Lib\Application\BackendApplication;
 
 // root directory
-define('ROOT_DIR', dirname(__DIR__));
+define('ROOT_DIR', realpath(dirname(__DIR__)));
 
-// composer autoloader
-require_once(ROOT_DIR . '/vendor/autoload.php');
-
-// DI container
-$di = new FactoryDefault();
+error_reporting(E_ALL | E_STRICT);
+ini_set('display_errors', 'On');
+ini_set('display_startup_errors', 'On');
 
 // loader
 $loader = new Loader();
-$loader->registerNamespaces([
-    'Eshopera' => ROOT_DIR . '/libs/Eshopera'
+$loader->registerFiles([
+    ROOT_DIR . '/vendor/autoload.php'
+])->registerNamespaces([
+    'Eshopera' => ROOT_DIR . '/app',
+    'EshoperaPlugin' => ROOT_DIR . '/plugin',
 ])->register();
+
+// DI container
+$di = new FactoryDefault();
 
 // add loader do DI
 $di->set('loader', $loader, true);
@@ -41,11 +46,14 @@ if (isset($_SERVER['REMOTE_ADDR']) && $_SERVER['REMOTE_ADDR'] == '127.0.0.1') {
 }
 
 try {
-    $application->setRootDir(ROOT_DIR)->configure()->registerServices();
+    $application->setRootDir(ROOT_DIR)->initialize()->loadConfig()->loadAppModules();
+    var_dump($application);
+    die;
     echo $application->handle()->getContent();
 } catch (\Exception $ex) {
-    if (($logger = $di->get('logger'))) {
-        $logger->critical(
+
+    if ($di->has('logger')) {
+        $di->get('logger')->critical(
             get_class($ex) . ': ' . $ex->getMessage() . ' at ' . $ex->getFile() .
             ':' . $ex->getLine() . ', exiting with status 503'
         );

@@ -1,3 +1,20 @@
 {
-    "basePath": "/"
+    "frontend": {
+        "basePath": "/"
+    },
+    "backend": {
+        "basePath": "/admin"
+    },
+    "api": {
+        "basePath": "/api"
+    },
+    "db": {
+        "host": "localhost",
+        "user": "root",
+        "password": "",
+        "dbname": "eshopera"
+    },
+    "cache": {
+        "adapter": "files"
+    }
 }
