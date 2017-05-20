@@ -94,10 +94,10 @@ trait ModulesTrait
         $di = $this->getDI();
 
         $module = new $moduleClass($alias, $config, $di);
-        $module->registerAutoloaders($di)
-            ->registerServices($di)
-            ->registerEventListeners($di->get('eventsManager'), self::CONTEXT)
-            ->registerRoutes($di->get('router'), self::CONTEXT);
+        $module->registerAutoloaders($di);
+        $module->registerServices($di);
+        $module->registerEventListeners($di->get('eventsManager'), self::CONTEXT);
+        $module->registerRoutes($di->get('router'), self::CONTEXT);
 
         $this->appModules[$alias] = $module;
 

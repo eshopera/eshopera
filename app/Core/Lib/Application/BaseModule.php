@@ -94,7 +94,7 @@ abstract class BaseModule implements ModuleInterface, InjectionAwareInterface
      */
     public function registerAutoloaders(DiInterface $di = null)
     {
-        return $this;
+
     }
 
     /**
@@ -102,7 +102,7 @@ abstract class BaseModule implements ModuleInterface, InjectionAwareInterface
      */
     public function registerServices(DiInterface $di)
     {
-        return $this;
+
     }
 
     /**
@@ -110,7 +110,7 @@ abstract class BaseModule implements ModuleInterface, InjectionAwareInterface
      */
     public function registerEventListeners(ManagerInterface $eventsManager, string $appContext)
     {
-        return $this;
+
     }
 
     /**
@@ -119,10 +119,9 @@ abstract class BaseModule implements ModuleInterface, InjectionAwareInterface
     public function registerRoutes(RouterInterface $router, string $appContext)
     {
         if ($appContext == ApplicationInterface::CONTEXT_FRONTEND) {
-            
+
         } elseif ($appContext == ApplicationInterface::CONTEXT_BACKEND) {
 
         }
-        return $this;
     }
 }
