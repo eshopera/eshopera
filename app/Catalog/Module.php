@@ -17,4 +17,6 @@ use Eshopera\Core\Lib\Application\BaseModule;
 class Module extends BaseModule
 {
 
+    const MODULE_DIR = __DIR__;
+
 }

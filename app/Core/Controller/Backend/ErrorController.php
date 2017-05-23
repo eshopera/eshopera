@@ -12,14 +12,16 @@ namespace Eshopera\Core\Controller\Backend;
 use Eshopera\Core\Lib\Mvc\Controller\BackendController;
 
 /**
- * Backend default controller
+ * Backend error controller
  */
-class IndexController extends BackendController
+class ErrorController extends BackendController
 {
 
-    public function indexAction()
+    /**
+     * No matching route found
+     */
+    public function notFoundAction()
     {
-        var_dump($this->identity);
-        die;
+        $this->view->pick('core/index/index');
     }
 }

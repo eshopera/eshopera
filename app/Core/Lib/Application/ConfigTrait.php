@@ -134,4 +134,28 @@ trait ConfigTrait
 
         return $this;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getBaseUri()
+    {
+        if ($this->config[self::CONTEXT]['baseUri']) {
+            return $this->config[self::CONTEXT]['baseUri'];
+        }
+
+        return self::DEFAULT_BASE_PATH;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getBasePath()
+    {
+        if ($this->config[self::CONTEXT]['basePath']) {
+            return $this->config[self::CONTEXT]['basePath'];
+        }
+
+        return self::DEFAULT_BASE_PATH;
+    }
 }

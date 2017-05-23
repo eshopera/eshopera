@@ -12,6 +12,8 @@ namespace Eshopera\Core\Lib\Application;
 use Eshopera\Core\Lib\ApplicationInterface;
 use Phalcon\Mvc\Application;
 use Phalcon\Mvc\Router;
+use Phalcon\Mvc\View;
+use Phalcon\Mvc\View\Engine\Volt;
 
 /**
  * Backend aka admin application
@@ -20,6 +22,7 @@ final class BackendApplication extends Application implements ApplicationInterfa
 {
 
     const CONTEXT = ApplicationInterface::CONTEXT_BACKEND;
+    const DEFAULT_BASE_PATH = '/admin/';
 
     use ConfigTrait;
     use ModulesTrait;
@@ -29,9 +32,58 @@ final class BackendApplication extends Application implements ApplicationInterfa
      */
     public function initialize()
     {
+        $di = $this->getDI();
+        $basePath = $this->getBasePath();
+
         $router = new Router(false);
         $router->setDefaultModule('core');
-        $this->getDI()->set('router', $router, true);
+        $router->add('^(' . $basePath . '|' . rtrim($basePath, '/') . ')$', [
+            'namespace' => 'Eshopera\\Core\\Controller\\Backend',
+        ]);
+        $router->notFound([
+            'namespace' => 'Eshopera\\Core\\Controller\\Backend',
+            'controller' => 'error',
+            'action' => 'notFound'
+        ]);
+
+        $di->set('router', $router, true);
+        $di->get('url')->setBaseUri($this->getBaseUri());
+
+        return $this;
+    }
+
+    /**
+     * Registers backend view
+     * @return self
+     */
+    public function registerView()
+    {
+        $di = $this->getDI();
+        $app = $this;
+
+        $di->set('view', function () use ($app) {
+            $cfg = $app->getConfig();
+            $view = new View();
+            $dirs = [];
+            foreach ($app->getAppModules() as $alias => $module) {
+                $dirs[] = $module->getDir() . '/templates/backend';
+            }
+            $view->setViewsDir($dirs);
+            $view->registerEngines([
+                '.volt' => function ($view, $di) use ($cfg) {
+                    $volt = new Volt($view, $di);
+                    $volt->setOptions([
+                        'compiledPath' => (empty($cfg->cacheDir) ? ROOT_DIR . '/temp/volt/' : $cfg->cacheDir),
+                        'compiledSeparator' => '_',
+                        'compileAlways' => (empty($cfg->compileAlways) ? false : $cfg->compileAlways),
+                        'stat' => true
+                    ]);
+                    return $volt;
+                }
+            ]);
+            return $view;
+        });
+
         return $this;
     }
 }

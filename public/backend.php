@@ -16,10 +16,6 @@ use Eshopera\Core\Lib\Application\BackendApplication;
 // root directory
 define('ROOT_DIR', realpath(dirname(__DIR__)));
 
-error_reporting(E_ALL | E_STRICT);
-ini_set('display_errors', 'On');
-ini_set('display_startup_errors', 'On');
-
 // loader
 $loader = new Loader();
 $loader->registerFiles([
@@ -46,9 +42,11 @@ if (isset($_SERVER['REMOTE_ADDR']) && $_SERVER['REMOTE_ADDR'] == '127.0.0.1') {
 }
 
 try {
-    $application->setRootDir(ROOT_DIR)->initialize()->loadConfig()->loadAppModules();
-    var_dump($application);
-    die;
+    $application->setRootDir(ROOT_DIR)
+        ->loadConfig()
+        ->initialize()
+        ->loadAppModules()
+        ->registerView();
     echo $application->handle()->getContent();
 } catch (\Exception $ex) {
 

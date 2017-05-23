@@ -26,6 +26,12 @@ interface ModuleInterface extends ModuleDefinitionInterface
     public function getAlias();
 
     /**
+     * Gets module namespace
+     * @return string
+     */
+    public function getNamespace();
+
+    /**
      * Gets module directory path
      * @return string
      */

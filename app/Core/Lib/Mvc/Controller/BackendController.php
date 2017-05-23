@@ -25,7 +25,20 @@ class BackendController extends Controller
      */
     public function beforeExecuteRoute(DispatcherInterface $dispatcher)
     {
-        echo 'BackencController';
-        die;
+        // allow access for core auth controller
+        if ($dispatcher->getModuleName() == 'core' && $dispatcher->getControllerName() == 'auth') {
+            return true;
+        }
+
+        $identity = $this->getDI()->get('identity');
+
+        // allow authenticated user
+        if ($identity->isLoggedIn()) {
+            return true;
+        }
+
+        $dispatcher->setReturnedValue($this->response->redirect($this->url->get('core/auth'), true));
+
+        return false;
     }
 }

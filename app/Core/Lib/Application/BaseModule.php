@@ -15,6 +15,7 @@ use Phalcon\Config;
 use Phalcon\DiInterface;
 use Phalcon\Events\ManagerInterface;
 use Phalcon\Mvc\RouterInterface;
+use Phalcon\Text;
 
 /**
  * Abstract module for creating eshopera modules
@@ -28,9 +29,19 @@ abstract class BaseModule implements ModuleInterface, InjectionAwareInterface
     protected $alias;
 
     /**
+     * @var string
+     */
+    protected $namespace;
+
+    /**
      * @var \Phalcon\Config
      */
     protected $config;
+
+    /**
+     * @var \Phalcon\DiInterface
+     */
+    protected $di;
 
     /**
      * Create new module
@@ -43,6 +54,11 @@ abstract class BaseModule implements ModuleInterface, InjectionAwareInterface
         $this->alias = $alias;
         $this->config = $config;
         $this->di = $di;
+
+        $ns = explode('\\', static::class);
+        array_pop($ns);
+
+        $this->namespace = implode('\\', $ns);
     }
 
     /**
@@ -76,6 +92,14 @@ abstract class BaseModule implements ModuleInterface, InjectionAwareInterface
     /**
      * {@inheritdoc}
      */
+    public function getNamespace()
+    {
+        return $this->namespace;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getConfig()
     {
         return $this->config;
@@ -86,7 +110,7 @@ abstract class BaseModule implements ModuleInterface, InjectionAwareInterface
      */
     public function getDir()
     {
-        return realpath(__DIR__);
+        return static::MODULE_DIR;
     }
 
     /**
@@ -118,10 +142,32 @@ abstract class BaseModule implements ModuleInterface, InjectionAwareInterface
      */
     public function registerRoutes(RouterInterface $router, string $appContext)
     {
-        if ($appContext == ApplicationInterface::CONTEXT_FRONTEND) {
-
-        } elseif ($appContext == ApplicationInterface::CONTEXT_BACKEND) {
-
+        if ($appContext == ApplicationInterface::CONTEXT_BACKEND) {
+            $basePath = $this->di->get('application')->getBasePath();
+            $module = Text::uncamelize($this->alias, '-');
+            $namespace = $this->namespace . '\\Controller\\Backend';
+            $router->add($basePath . $module, [
+                'namespace' => $namespace,
+                'module' => $this->alias
+            ]);
+            $router->add($basePath . $module . '/:controller', [
+                'namespace' => $namespace,
+                'module' => $this->alias,
+                'controller' => 1
+            ]);
+            $router->add($basePath . $module . '/:controller/:action', [
+                'namespace' => $namespace,
+                'module' => $this->alias,
+                'controller' => 1,
+                'action' => 2
+            ]);
+            $router->add($basePath . $module . '/:controller/:action/:params', [
+                'namespace' => $namespace,
+                'module' => $this->alias,
+                'controller' => 1,
+                'action' => 2,
+                'params' => 3
+            ]);
         }
     }
 }

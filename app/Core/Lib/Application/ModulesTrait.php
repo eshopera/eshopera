@@ -51,6 +51,14 @@ trait ModulesTrait
     /**
      * {@inheritdoc}
      */
+    public function getAppModules()
+    {
+        return $this->appModules;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function loadAppModules(string $configDir = null)
     {
         if ($configDir) {

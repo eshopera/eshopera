@@ -64,6 +64,13 @@ interface ApplicationInterface
     public function getAppModule($alias);
 
     /**
+     * Gets all application modules
+     * @param  string $alias
+     * @return \Eshopera\Core\Lib\Mvc\ModuleInterface[]
+     */
+    public function getAppModules();
+
+    /**
      * Loads application modules
      * @param  string $configDir - default null
      * @return self
@@ -97,4 +104,16 @@ interface ApplicationInterface
      * @return self
      */
     public function setRootDir(string $rootDir);
+
+    /**
+     * Gets application base URI
+     * @return string
+     */
+    public function getBaseUri();
+
+    /**
+     * Gets application base path
+     * @return string
+     */
+    public function getBasePath();
 }

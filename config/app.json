@@ -3,7 +3,7 @@
         "basePath": "/"
     },
     "backend": {
-        "basePath": "/admin"
+        "baseUri": "/admin/"
     },
     "api": {
         "basePath": "/api"

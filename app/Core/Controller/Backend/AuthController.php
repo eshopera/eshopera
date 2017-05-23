@@ -12,14 +12,16 @@ namespace Eshopera\Core\Controller\Backend;
 use Eshopera\Core\Lib\Mvc\Controller\BackendController;
 
 /**
- * Backend default controller
+ * Backend authorization controller
  */
-class IndexController extends BackendController
+class AuthController extends BackendController
 {
 
+    /**
+     * Login page
+     */
     public function indexAction()
     {
-        var_dump($this->identity);
-        die;
+        
     }
 }
