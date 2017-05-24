@@ -10,60 +10,26 @@
 namespace Eshopera\Core\Lib\DI\Service;
 
 use Eshopera\Core\Lib\Auth\IdentityInterface;
-use Phalcon\Session\AdapterInterface;
+use Eshopera\Core\Lib\Exception\AuthException;
+use Phalcon\Session\Bag;
 
 /**
  * Authenticated user identity
  */
-final class Identity implements IdentityInterface
+final class Identity extends Bag implements IdentityInterface
 {
 
-    const SESSION_KEY = 'identity';
-
-    /**
-     * @var \Phalcon\Session\AdapterInterface
-     */
-    private $session;
-
-    /**
-     * @var int
-     */
-    private $id;
-
-    /**
-     * @var string
-     */
-    private $name = IdentityInterface::DEFAULT_NAME;
-
-    /**
-     * Dependency injection
-     * @param \Phalcon\Session\AdapterInterface $session
-     */
-    public function __construct(AdapterInterface $session)
-    {
-        $this->session = $session;
-        $stored = $session->get(self::SESSION_KEY);
-        if ($stored instanceof IdentityInterface) {
-            $this->initialize($identity);
-        }
-    }
+    const DEFAULT_NAME = 'guest';
+    const PERSITENT_KEY = 'identity';
 
     /**
      * {@inheritdoc}
      */
-    public function initialize(IdentityInterface $identity)
+    public function fill(IdentityInterface $identity)
     {
-        $this->id = $identity->getId();
-        $this->name = $identity->getName();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function persist()
-    {
-        $this->session->set(self::SESSION_KEY, $this);
-        $this->session->regenerateId(true);
+        $this->set('id', $identity->getId());
+        $this->set('email', $identity->getEmail());
+        $this->set('name', $identity->getName());
     }
 
     /**
@@ -71,10 +37,11 @@ final class Identity implements IdentityInterface
      */
     public function clear()
     {
-        if ($this->session->has(self::SESSION_KEY)) {
-            $this->session->remove(self::SESSION_KEY);
+        if ($this->has('id')) {
+            $this->remove('id');
+            $this->remove('email');
+            $this->remove('name');
         }
-        $this->session->regenerateId(true);
     }
 
     /**
@@ -82,7 +49,7 @@ final class Identity implements IdentityInterface
      */
     public function isLoggedIn()
     {
-        return ($this->id ? true : false);
+        return ($this->getId() ? true : false);
     }
 
     /**
@@ -90,7 +57,15 @@ final class Identity implements IdentityInterface
      */
     public function getId()
     {
-        return $this->id;
+        return $this->get('id');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getEmail()
+    {
+        return $this->get('email');
     }
 
     /**
@@ -98,7 +73,7 @@ final class Identity implements IdentityInterface
      */
     public function getName()
     {
-        return $this->name;
+        return $this->get('name', self::DEFAULT_NAME);
     }
 
     /**
@@ -110,23 +85,13 @@ final class Identity implements IdentityInterface
     }
 
     /**
-     * Serialize handler
-     * @return string
+     * Disable magic setter
+     * @param  string $property
+     * @param  mixed $value
+     * @throws \Eshopera\Core\Lib\Exception\AuthException
      */
-    public function serialize()
+    public function __set($property, $value)
     {
-        return serialize([
-            $this->id,
-            $this->name
-        ]);
-    }
-
-    /**
-     * Unserialize handler
-     * @param string $data
-     */
-    public function unserialize($data)
-    {
-        list($this->id, $this->name) = unserialize($data);
+        throw new AuthException('Identity values cannot be set directly');
     }
 }

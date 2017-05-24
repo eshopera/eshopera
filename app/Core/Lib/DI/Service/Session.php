@@ -9,7 +9,6 @@
 
 namespace Eshopera\Core\Lib\DI\Service;
 
-use Eshopera\Core\Lib\DI\Service\Identity;
 use Phalcon\Session\Adapter\Files;
 use Phalcon\Config;
 use Phalcon\Http\RequestInterface;
@@ -56,8 +55,8 @@ final class Session extends Files
         // preventing session hijack
         if (($savedHash = $this->get('__hash'))) {
             if ($hash != $savedHash) {
-                $this->remove(Identity::SESSION_KEY);
-                $this->remove('__hash');
+                $this->destroy(true);
+                $this->start();
             }
         } else {
             $this->set('__hash', $hash);

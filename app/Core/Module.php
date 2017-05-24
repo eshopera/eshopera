@@ -39,8 +39,8 @@ class Module extends BaseModule
             return new Session($di->get('request'), (empty($config->session) ? null : $config->session));
         }, true);
 
-        $di->set('identity', function () use ($di) {
-            return new Identity($di->get('session'));
+        $di->set('user', function () {
+            return new Identity('__user');
         }, true);
     }
 }

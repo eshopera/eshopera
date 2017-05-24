@@ -7,18 +7,11 @@
  * Written by David Hubner <david.hubner@gmail.com>
  */
 
-namespace Eshopera\Core\Controller\Backend;
+namespace Eshopera\Core\Lib\Exception;
 
-use Eshopera\Core\Lib\Mvc\Controller\BackendController;
+use Exception;
 
-/**
- * Backend default controller
- */
-class IndexController extends BackendController
+class AuthException extends Exception
 {
 
-    public function indexAction()
-    {
-        
-    }
 }

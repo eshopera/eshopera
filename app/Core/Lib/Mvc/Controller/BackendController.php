@@ -30,10 +30,10 @@ class BackendController extends Controller
             return true;
         }
 
-        $identity = $this->getDI()->get('identity');
+        $user = $this->getDI()->get('user');
 
         // allow authenticated user
-        if ($identity->isLoggedIn()) {
+        if ($user->isLoggedIn()) {
             return true;
         }
 

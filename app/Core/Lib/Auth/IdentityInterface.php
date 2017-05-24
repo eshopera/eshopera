@@ -12,10 +12,8 @@ namespace Eshopera\Core\Lib\Auth;
 /**
  * Interface for user identity
  */
-interface IdentityInterface extends \Serializable
+interface IdentityInterface
 {
-
-    const DEFAULT_NAME = 'guest';
 
     /**
      * Checks if user is successfully logged in
@@ -30,30 +28,30 @@ interface IdentityInterface extends \Serializable
     public function getId();
 
     /**
+     * Gets identity email
+     * @return string
+     */
+    public function getEmail();
+
+    /**
      * Gets identity name
      * @return string
      */
     public function getName();
 
     /**
-     * Gets identity first name letter
-     * @return string
-     */
-    public function getNameLetter();
-
-    /**
      * Initializes identity data
      * @param \Eshopera\Core\Lib\Auth\IdentityInterface $identity
      */
-    public function initialize(IdentityInterface $identity);
-
-    /**
-     * Persists actual identity
-     */
-    public function persist();
+    public function fill(IdentityInterface $identity);
 
     /**
      * Clears all persisted data
      */
     public function clear();
+
+    /**
+     * Destroys persisted data
+     */
+    public function destroy();
 }
