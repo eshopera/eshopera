@@ -26,6 +26,12 @@ interface ModuleInterface extends ModuleDefinitionInterface
     public function getAlias();
 
     /**
+     * Gets current module version
+     * @return string
+     */
+    public function getVersion();
+
+    /**
      * Gets module namespace
      * @return string
      */
@@ -56,4 +62,10 @@ interface ModuleInterface extends ModuleDefinitionInterface
      * @param string $appContext - application context
      */
     public function registerRoutes(RouterInterface $router, string $appContext);
+
+    /**
+     * Gets module installer
+     * @return \Eshopera\Core\Lib\Application\Module\InstallerInterface
+     */
+    public function getInstaller();
 }

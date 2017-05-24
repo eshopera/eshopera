@@ -92,6 +92,14 @@ abstract class BaseModule implements ModuleInterface, InjectionAwareInterface
     /**
      * {@inheritdoc}
      */
+    public function getVersion()
+    {
+        return static::MODULE_VER;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getNamespace()
     {
         return $this->namespace;

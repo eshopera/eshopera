@@ -7,21 +7,19 @@
  * Written by David Hubner <david.hubner@gmail.com>
  */
 
-namespace Eshopera\Core\Controller\Backend;
+namespace Eshopera\Core\Lib\Mvc;
 
-use Eshopera\Core\Lib\Mvc\BackendController;
+use Phalcon\Mvc\ModelInterface;
 
 /**
- * Backend error controller
+ * Extended interface for model
  */
-class ErrorController extends BackendController
+interface ExtendedModelInterface extends ModelInterface
 {
 
     /**
-     * No matching route found
+     * Gets model validation
+     * @return \Phalcon\ValidationInterface
      */
-    public function notFoundAction()
-    {
-        $this->view->pick('core/index/index');
-    }
+    public function getValidation();
 }

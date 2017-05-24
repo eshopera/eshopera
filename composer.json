@@ -14,16 +14,17 @@
     "authors": [
         {
             "name": "David Hubner",
-            "email": "david.hubner@gmail.com",
             "homepage": "https://github.com/davihu"
         }
     ],
     "support": {
-        "issues": "https://github.com/davihu/eshopera/issues",
-        "source": "https://github.com/davihu/eshopera"
+        "issues": "https://github.com/eshopera/eshopera/issues",
+        "source": "https://github.com/eshopera/eshopera"
     },
     "require": {
         "php": "^7.0",
+        "ext-phalcon": "^3.0",
+        "phalcon/incubator": "^3.0",
         "davihu/phalcon-ext": "@dev"
     },
     "require-dev": {

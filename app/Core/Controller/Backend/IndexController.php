@@ -9,7 +9,7 @@
 
 namespace Eshopera\Core\Controller\Backend;
 
-use Eshopera\Core\Lib\Mvc\Controller\BackendController;
+use Eshopera\Core\Lib\Mvc\BackendController;
 
 /**
  * Backend default controller
@@ -19,6 +19,6 @@ class IndexController extends BackendController
 
     public function indexAction()
     {
-        
+
     }
 }

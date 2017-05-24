@@ -23,7 +23,8 @@ final class Identity extends Bag implements IdentityInterface
     const PERSITENT_KEY = 'identity';
 
     /**
-     * {@inheritdoc}
+     * Initializes identity data
+     * @param \Eshopera\Core\Lib\Auth\IdentityInterface $identity
      */
     public function fill(IdentityInterface $identity)
     {
@@ -33,7 +34,7 @@ final class Identity extends Bag implements IdentityInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Clears all persisted data
      */
     public function clear()
     {
@@ -45,7 +46,8 @@ final class Identity extends Bag implements IdentityInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Checks if user is successfully logged in
+     * @return bool
      */
     public function isLoggedIn()
     {

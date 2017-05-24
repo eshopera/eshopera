@@ -9,12 +9,25 @@
         "basePath": "/api"
     },
     "db": {
-        "host": "localhost",
-        "user": "root",
-        "password": "",
-        "dbname": "eshopera"
+        "master": {
+            "host": "localhost",
+            "user": "root",
+            "password": "",
+            "dbname": "eshopera"
+        }
+    },
+    "logger": {
+        "level": 9
     },
     "cache": {
-        "adapter": "files"
+        "adapter": "redis",
+        "options": {
+            "host": "localhost",
+            "port": 6379,
+            "auth": "",
+            "persistent": true,
+            "index": 0,
+            "prefix": ""
+        }
     }
 }

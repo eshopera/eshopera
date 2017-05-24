@@ -16,12 +16,6 @@ interface IdentityInterface
 {
 
     /**
-     * Checks if user is successfully logged in
-     * @return bool
-     */
-    public function isLoggedIn();
-
-    /**
      * Gets identity unique ID
      * @return string
      */
@@ -38,20 +32,4 @@ interface IdentityInterface
      * @return string
      */
     public function getName();
-
-    /**
-     * Initializes identity data
-     * @param \Eshopera\Core\Lib\Auth\IdentityInterface $identity
-     */
-    public function fill(IdentityInterface $identity);
-
-    /**
-     * Clears all persisted data
-     */
-    public function clear();
-
-    /**
-     * Destroys persisted data
-     */
-    public function destroy();
 }

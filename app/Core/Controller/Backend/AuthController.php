@@ -9,7 +9,7 @@
 
 namespace Eshopera\Core\Controller\Backend;
 
-use Eshopera\Core\Lib\Mvc\Controller\BackendController;
+use Eshopera\Core\Lib\Mvc\BackendController;
 
 /**
  * Backend authorization controller
@@ -22,6 +22,7 @@ class AuthController extends BackendController
      */
     public function indexAction()
     {
-        
+        var_dump($this->getDI()->get('session')->get('aaa', 'a'));
+        die;
     }
 }

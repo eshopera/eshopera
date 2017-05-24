@@ -18,5 +18,13 @@ class Module extends BaseModule
 {
 
     const MODULE_DIR = __DIR__;
+    const MODULE_VER = '1.0';
 
+    /**
+     * {@inheritdoc}
+     */
+    public function getInstaller()
+    {
+        return new Installer($this, $this->getDI()->get('db'));
+    }
 }

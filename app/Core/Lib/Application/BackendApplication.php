@@ -58,10 +58,9 @@ final class BackendApplication extends Application implements ApplicationInterfa
      */
     public function registerView()
     {
-        $di = $this->getDI();
         $app = $this;
 
-        $di->set('view', function () use ($app) {
+        $this->getDI()->set('view', function () use ($app) {
             $cfg = $app->getConfig();
             $view = new View();
             $dirs = [];

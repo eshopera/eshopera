@@ -7,14 +7,14 @@
  * Written by David Hubner <david.hubner@gmail.com>
  */
 
-namespace Eshopera\Core\Model;
+namespace Eshopera\Catalog;
 
-use Eshopera\Core\Lib\Mvc\Model\BaseModel;
+use Eshopera\Core\Lib\Application\Module\BaseInstaller;
 
 /**
- * User model
+ * Installer for core
  */
-class User extends BaseModel
+class Installer extends BaseInstaller
 {
-    
+
 }

@@ -7,7 +7,7 @@
  * Written by David Hubner <david.hubner@gmail.com>
  */
 
-namespace Eshopera\Core\Lib\Mvc\Controller;
+namespace Eshopera\Core\Lib\Mvc;
 
 use Phalcon\Mvc\Controller;
 use Phalcon\Mvc\DispatcherInterface;
@@ -30,10 +30,8 @@ class BackendController extends Controller
             return true;
         }
 
-        $user = $this->getDI()->get('user');
-
         // allow authenticated user
-        if ($user->isLoggedIn()) {
+        if ($this->user->isLoggedIn()) {
             return true;
         }
 
