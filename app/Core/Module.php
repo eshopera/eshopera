@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (c) 2017 Eshopera Team - https://github.com/davihu/eshopera
+ * Copyright (c) 2017 Eshopera Team - https://github.com/eshopera/eshopera
  * This source file is subject to the BSD 3-Clause Licence.
  * Licence is bundled with this project in the file LICENCE.
  * Written by David Hubner <david.hubner@gmail.com>
@@ -13,6 +13,9 @@ use Eshopera\Core\Lib\Application\BaseModule;
 use Eshopera\Core\Lib\DI\Service\Session;
 use Eshopera\Core\Lib\DI\Service\Identity;
 use Eshopera\Core\Lib\Http\AjaxResponse;
+use Eshopera\Core\Lib\Events\Listener\ApplicationListener;
+use Eshopera\Core\Lib\Events\Listener\ViewListener;
+use Eshopera\Core\Lib\ApplicationInterface;
 use Phalcon\DiInterface;
 use Phalcon\Http\Response;
 use Phalcon\Logger\Adapter\File as FileLogger;
@@ -20,6 +23,8 @@ use Phalcon\Db\Adapter\Pdo\Mysql;
 use Phalcon\Cache\Frontend\Data as DataCache;
 use Phalcon\Cache\Frontend\Output as OutputCache;
 use Phalcon\Cache\Backend as CacheBackend;
+use Phalcon\Events\ManagerInterface;
+use Phalcon\Assets\Manager as AssetsManager;
 
 /**
  * Core module
@@ -29,17 +34,19 @@ class Module extends BaseModule
 
     const MODULE_DIR = __DIR__;
     const MODULE_VER = '1.0';
+    const HAS_FRONTEND = true;
+    const HAS_BACKEND = true;
 
     /**
      * {@inheritdoc}
      */
-    public function registerServices(DiInterface $di)
+    public function registerServices(DiInterface $di, string $appContext)
     {
         $config = $this->getConfig();
 
         $this->getDI()->set('logger', function () use ($config) {
             $rootDir = $this->get('application')->getRootDir();
-            $logger = FileLogger($rootDir . '/log/app-' . date('ym') . '.log');
+            $logger = new FileLogger($rootDir . '/log/app-' . date('ym') . '.log');
             if (!empty($config->logger->level)) {
                 $logger->setLogLevel($config->logger->level);
             }
@@ -107,6 +114,47 @@ class Module extends BaseModule
         $di->set('user', function () {
             return new Identity('__user');
         }, true);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function registerEventListeners(ManagerInterface $eventsManager, string $appContext)
+    {
+        $di = $this->getDI();
+
+        $eventsManager->attach('application', new ApplicationListener($di->get('dispatcher')));
+        $eventsManager->attach('view', new ViewListener($di->get('application')));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function registerAssets(AssetsManager $assetsManager, string $appContext)
+    {
+        if ($appContext == ApplicationInterface::CONTEXT_FRONTEND) {
+            $this->registerFrontendAssets($assetsManager);
+        } elseif ($appContext == ApplicationInterface::CONTEXT_BACKEND) {
+            $this->registerBackendAssets($assetsManager);
+        }
+    }
+
+    /**
+     * Registers core frontend assets
+     * @param \Phalcon\Assets\Manager $assetsManager
+     */
+    private function registerFrontendAssets(AssetsManager $assetsManager)
+    {
+
+    }
+
+    /**
+     * Registers core backend assets
+     * @param \Phalcon\Assets\Manager $assetsManager
+     */
+    private function registerBackendAssets(AssetsManager $assetsManager)
+    {
+
     }
 
     /**

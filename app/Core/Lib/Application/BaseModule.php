@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (c) 2017 Eshopera Team - https://github.com/davihu/eshopera
+ * Copyright (c) 2017 Eshopera Team - https://github.com/eshopera/eshopera
  * This source file is subject to the BSD 3-Clause Licence.
  * Licence is bundled with this project in the file LICENCE.
  * Written by David Hubner <david.hubner@gmail.com>
@@ -15,6 +15,7 @@ use Phalcon\Config;
 use Phalcon\DiInterface;
 use Phalcon\Events\ManagerInterface;
 use Phalcon\Mvc\RouterInterface;
+use Phalcon\Assets\Manager as AssetsManager;
 use Phalcon\Text;
 
 /**
@@ -22,6 +23,10 @@ use Phalcon\Text;
  */
 abstract class BaseModule implements ModuleInterface, InjectionAwareInterface
 {
+
+    const HAS_FRONTEND = false;
+    const HAS_BACKEND = false;
+    const HAS_API = false;
 
     /**
      * @var string
@@ -108,14 +113,6 @@ abstract class BaseModule implements ModuleInterface, InjectionAwareInterface
     /**
      * {@inheritdoc}
      */
-    public function getConfig()
-    {
-        return $this->config;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getDir()
     {
         return static::MODULE_DIR;
@@ -124,7 +121,31 @@ abstract class BaseModule implements ModuleInterface, InjectionAwareInterface
     /**
      * {@inheritdoc}
      */
-    public function registerAutoloaders(DiInterface $di = null)
+    public function getConfig()
+    {
+        return $this->config;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function hasContext(string $appContext)
+    {
+        if ($appContext == ApplicationInterface::CONTEXT_FRONTEND) {
+            return static::HAS_FRONTEND;
+        } elseif ($appContext == ApplicationInterface::CONTEXT_BACKEND) {
+            return static::HAS_BACKEND;
+        } elseif ($appContext == ApplicationInterface::CONTEXT_API) {
+            return static::HAS_API;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function registerAutoloaders(DiInterface $di, string $appContext)
     {
 
     }
@@ -132,7 +153,7 @@ abstract class BaseModule implements ModuleInterface, InjectionAwareInterface
     /**
      * {@inheritdoc}
      */
-    public function registerServices(DiInterface $di)
+    public function registerServices(DiInterface $di, string $appContext)
     {
 
     }
@@ -177,5 +198,13 @@ abstract class BaseModule implements ModuleInterface, InjectionAwareInterface
                 'params' => 3
             ]);
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function registerAssets(AssetsManager $assetsManager, string $appContext)
+    {
+
     }
 }

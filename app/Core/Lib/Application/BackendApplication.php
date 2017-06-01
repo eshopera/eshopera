@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (c) 2017 Eshopera Team - https://github.com/davihu/eshopera
+ * Copyright (c) 2017 Eshopera Team - https://github.com/eshopera/eshopera
  * This source file is subject to the BSD 3-Clause Licence.
  * Licence is bundled with this project in the file LICENCE.
  * Written by David Hubner <david.hubner@gmail.com>
@@ -33,6 +33,9 @@ final class BackendApplication extends Application implements ApplicationInterfa
     public function initialize()
     {
         $di = $this->getDI();
+
+        $this->setEventsManager($di->get('eventsManager'));
+
         $basePath = $this->getBasePath();
 
         $router = new Router(false);
@@ -65,9 +68,10 @@ final class BackendApplication extends Application implements ApplicationInterfa
             $view = new View();
             $dirs = [];
             foreach ($app->getAppModules() as $alias => $module) {
-                $dirs[] = $module->getDir() . '/templates/backend';
+                $dirs[] = $module->getDir() . '/resources/backend/views';
             }
             $view->setViewsDir($dirs);
+            $view->setEventsManager($this->getEventsManager());
             $view->registerEngines([
                 '.volt' => function ($view, $di) use ($cfg) {
                     $volt = new Volt($view, $di);

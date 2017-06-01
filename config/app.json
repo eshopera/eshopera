@@ -1,12 +1,7 @@
 {
-    "frontend": {
-        "basePath": "/"
-    },
+    "name": "Eshopera",
     "backend": {
         "baseUri": "/admin/"
-    },
-    "api": {
-        "basePath": "/api"
     },
     "db": {
         "master": {
@@ -29,5 +24,11 @@
             "index": 0,
             "prefix": ""
         }
+    },
+    "assets": {
+        "jsVersion": "1",
+        "cssVersion": "1",
+        "join": true,
+        "minimize": true
     }
 }

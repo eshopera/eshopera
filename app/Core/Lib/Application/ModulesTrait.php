@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (c) 2017 Eshopera Team - https://github.com/davihu/eshopera
+ * Copyright (c) 2017 Eshopera Team - https://github.com/eshopera/eshopera
  * This source file is subject to the BSD 3-Clause Licence.
  * Licence is bundled with this project in the file LICENCE.
  * Written by David Hubner <david.hubner@gmail.com>
@@ -23,7 +23,7 @@ trait ModulesTrait
     /**
      * @var array
      */
-    private $appModules;
+    private $appModules = [];
 
     /**
      * {@inheritdoc}
@@ -62,13 +62,13 @@ trait ModulesTrait
     public function loadAppModules(string $configDir = null)
     {
         if ($configDir) {
-            $configPath = rtrim($configPath, '/') . '/modules.' . self::CONTEXT . '.json';
+            $configPath = rtrim($configPath, '/') . '/modules.json';
         } else {
-            $configPath = $this->rootDir . '/config/modules.' . self::CONTEXT . '.json';
+            $configPath = $this->rootDir . '/config/modules.json';
         }
 
         if (!is_file($configPath)) {
-            throw new ApplicationException('Missing configuration "config/modules.' . self::CONTEXT . '.json"');
+            throw new ApplicationException('Missing configuration "config/modules.json"');
         }
 
         $this->registerAppModule('core', $this->config);
@@ -102,14 +102,17 @@ trait ModulesTrait
         $di = $this->getDI();
 
         $module = new $moduleClass($alias, $config, $di);
-        $module->registerAutoloaders($di);
-        $module->registerServices($di);
-        $module->registerEventListeners($di->get('eventsManager'), self::CONTEXT);
-        $module->registerRoutes($di->get('router'), self::CONTEXT);
 
-        $this->appModules[$alias] = $module;
+        if ($module->hasContext(self::CONTEXT)) {
+            $module->registerAutoloaders($di, self::CONTEXT);
+            $module->registerServices($di, self::CONTEXT);
+            $module->registerEventListeners($di->get('eventsManager'), self::CONTEXT);
+            $module->registerRoutes($di->get('router'), self::CONTEXT);
 
-        $di->set($alias . 'Module', $module, true);
+            $this->appModules[$alias] = $module;
+
+            $di->set($alias . 'Module', $module, true);
+        }
     }
 
     /**
