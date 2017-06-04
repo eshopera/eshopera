@@ -19,6 +19,32 @@ class BackendController extends Controller
 {
 
     /**
+     * @var \Eshopera\Core\Lib\ApplicationInterface
+     */
+    protected $application;
+
+    /**
+     * @var \Eshopera\Core\Lib\DI\Service\Identity
+     */
+    protected $user;
+
+    /**
+     * @var \Phalcon\Translate\AdapterInterface
+     */
+    protected $translate;
+
+    /**
+     * Initialize controller attributes
+     */
+    public function onConstruct()
+    {
+        $di = $this->getDI();
+        $this->application = $di->get('application');
+        $this->user = $di->get('user');
+        $this->translate = $di->get('translate');
+    }
+
+    /**
      * Checks privileged access
      * @param  \Phalcon\Mvc\DispatcherInterface $dispatcher
      * @return bool

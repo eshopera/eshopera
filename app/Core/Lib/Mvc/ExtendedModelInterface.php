@@ -12,7 +12,7 @@ namespace Eshopera\Core\Lib\Mvc;
 use Phalcon\Mvc\ModelInterface;
 
 /**
- * Extended interface for model
+ * Validation interface for model
  */
 interface ExtendedModelInterface extends ModelInterface
 {

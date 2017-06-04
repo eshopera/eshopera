@@ -35,12 +35,6 @@ class ViewListener
         $this->application = $application;
     }
 
-    public function beforeView()
-    {
-        echo 'asdf';
-        die;
-    }
-
     /**
      * Register global variables and assets
      * @param  \Phalcon\Events\Event $event
@@ -50,6 +44,8 @@ class ViewListener
     public function beforeRender(Event $event, View $view)
     {
         $di = $this->application->getDI();
+
+        $view->cdn = '/static';
 
         if ($di->get('request')->isAjax()) {
             return true;
@@ -67,5 +63,9 @@ class ViewListener
 
         $tag->setTitleSeparator(self::TITLE_SEPARATOR);
         $tag->appendTitle($this->application->getConfig()->name);
+
+        if (!isset($view->bodyClass)) {
+            $view->bodyClass = '';
+        }
     }
 }

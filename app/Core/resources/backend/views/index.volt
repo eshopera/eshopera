@@ -11,7 +11,7 @@
         {{ get_title() }}
     </head>
 
-    <body>
+    <body class="{{ bodyClass }}">
         {{ content() }}
     </body>
 

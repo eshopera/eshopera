@@ -33,6 +33,7 @@ $di->set('loader', $loader, true);
 
 // backend application
 $application = new BackendApplication($di);
+$application->setEventsManager($di->get('eventsManager'));
 
 // add application to di
 $di->set('application', $application, true);

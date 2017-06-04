@@ -23,6 +23,7 @@ use Phalcon\Db\Adapter\Pdo\Mysql;
 use Phalcon\Cache\Frontend\Data as DataCache;
 use Phalcon\Cache\Frontend\Output as OutputCache;
 use Phalcon\Cache\Backend as CacheBackend;
+use Phalcon\Translate\Adapter\NativeArray;
 use Phalcon\Events\ManagerInterface;
 use Phalcon\Assets\Manager as AssetsManager;
 
@@ -113,6 +114,14 @@ class Module extends BaseModule
 
         $di->set('user', function () {
             return new Identity('__user');
+        }, true);
+
+        $di->set('translate', function () {
+            $rootDir = $this->get('application')->getRootDir();
+            require_once($rootDir . '/temp/translate/cs.php');
+            return new NativeArray([
+                'content' => $TRANSLATE_CS
+            ]);
         }, true);
     }
 

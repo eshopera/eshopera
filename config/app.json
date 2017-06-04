@@ -1,5 +1,6 @@
 {
     "name": "Eshopera",
+    "template": "default",
     "backend": {
         "baseUri": "/admin/"
     },

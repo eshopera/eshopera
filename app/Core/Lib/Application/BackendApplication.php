@@ -10,6 +10,7 @@
 namespace Eshopera\Core\Lib\Application;
 
 use Eshopera\Core\Lib\ApplicationInterface;
+use Eshopera\Core\Lib\Tag;
 use Phalcon\Mvc\Application;
 use Phalcon\Mvc\Router;
 use Phalcon\Mvc\View;
@@ -33,8 +34,6 @@ final class BackendApplication extends Application implements ApplicationInterfa
     public function initialize()
     {
         $di = $this->getDI();
-
-        $this->setEventsManager($di->get('eventsManager'));
 
         $basePath = $this->getBasePath();
 
@@ -67,7 +66,7 @@ final class BackendApplication extends Application implements ApplicationInterfa
             $cfg = $app->getConfig();
             $view = new View();
             $dirs = [];
-            foreach ($app->getAppModules() as $alias => $module) {
+            foreach ($app->getAppModules() as $module) {
                 $dirs[] = $module->getDir() . '/resources/backend/views';
             }
             $view->setViewsDir($dirs);
@@ -81,6 +80,20 @@ final class BackendApplication extends Application implements ApplicationInterfa
                         'compileAlways' => (empty($cfg->compileAlways) ? false : $cfg->compileAlways),
                         'stat' => true
                     ]);
+
+                    // adding translate support to volt
+                    $compiler = $volt->getCompiler();
+                    $compiler->addFunction(
+                        '_', function ($resolvedArgs, $exprArgs) {
+                            return 'Eshopera\Core\Lib\Tag::_(' . $resolvedArgs . ')';
+                        });
+                    $compiler->addFunction(
+                        'cutstr', function ($resolvedArgs, $exprArgs) {
+                            return 'Eshopera\Core\Lib\Tag::cutstr(' . $resolvedArgs . ')';
+                        });
+
+                    Tag::setDI($di);
+
                     return $volt;
                 }
             ]);
