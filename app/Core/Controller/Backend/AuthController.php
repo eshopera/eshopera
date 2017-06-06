@@ -11,6 +11,7 @@ namespace Eshopera\Core\Controller\Backend;
 
 use Eshopera\Core\Lib\Mvc\BackendController;
 use Eshopera\Core\Form\Backend\LoginForm;
+use Eshopera\Core\Lib\Exception\AuthException;
 
 /**
  * Backend authorization controller
@@ -27,24 +28,24 @@ class AuthController extends BackendController
     public function indexAction()
     {
         if ($this->user->isLoggedIn()) {
-            return $this->redirect('/');
+            return $this->response->redirect($this->url->get(''), true);
         }
 
         $username = $this->cookies->get(self::COOKIE_USERNAME_NAME)->getValue();
         $back = $this->request->get('back');
 
         $form = new LoginForm();
-        $form->setAction($this->url->get('core/auth'));
+        $form->setAction($this->url->get('/core/auth'));
         $form->get('username')->setDefault($username);
         $form->get('back')->setDefault($back);
 
         if ($this->request->isPost() && $form->isValid($this->request->getPost(), new \stdClass(), true)) {
             if ($this->handleSignIn($form)) {
-                return $this->response->redirect(($back ? $back : '/'));
+                return $this->response->redirect(($back ? $back : $this->url->get('')), true);
             }
         }
 
-        $config = $this->application->getConfig();
+        $config = $this->getDI()->get('application')->getConfig();
 
         $this->view->appName = $config->name;
         $this->view->form = $form;
@@ -54,28 +55,40 @@ class AuthController extends BackendController
     }
 
     /**
+     * User logout
+     */
+    public function logoutAction()
+    {
+        $this->getDI()->get('user')->clear();
+        $this->session->regenerateId(true);
+        return $this->response->redirect($this->url->get('/core/auth'));
+    }
+
+    /**
      * Handles user login
      * @param  \Eshopera\Core\Form\Backend\LoginForm $form
      * @return bool
      */
     private function handleSignIn(LoginForm $form)
     {
-        return true;
-
         $username = $form->getValue('username');
-        $passwd = $form->getValue('password');
+        $password = $form->getValue('password');
 
         $this->cookies->set(
             self::COOKIE_USERNAME_NAME, $username, time() + self::COOKIE_USERNAME_TTL, '/', true, null, true
         );
 
-        $user = $this->coreUserFacade->findFirstByValidCredentials($username, $passwd);
-
-        if (empty($user)) {
-            $this->fillFlashMessages($this->usersFacade->getMessages());
+        try {
+            $user = $this->getDI()->get('auth')->authenticate([
+                'username' => $username, 'password' => $password
+            ]);
+        } catch (AuthException $ex) {
+            $this->flashSession->error($ex->getMessage());
             return false;
         }
 
-        return $this->loginUser($user, false);
+        $this->getDI()->get('user')->fill($user);
+
+        return true;
     }
 }

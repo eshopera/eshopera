@@ -41,5 +41,6 @@ abstract class BaseModel extends Model implements ExtendedModelInterface
     public function initialize()
     {
         $this->useDynamicUpdate(true);
+        $this->setEventsManager($this->getDI()->get('eventsManager'));
     }
 }

@@ -19,7 +19,7 @@ use Phalcon\Http\RequestInterface;
 final class Session extends Files
 {
 
-    const DEFAULT_NAME = 'SESSION';
+    const DEFAULT_NAME = 'sid';
     const DEFAULT_LIFETIME = 14400;
     const DEFAULT_VALIDATE_IP = false;
     const REGENERATE_EVERY = 900;

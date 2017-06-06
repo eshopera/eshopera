@@ -156,8 +156,6 @@ class User extends BaseModel implements IdentityInterface
             ],
             MetaData::MODELS_NOT_NULL => [
                 'id',
-                'createdAt',
-                'updatedAt',
                 'email',
                 'name',
                 'passwdHash',

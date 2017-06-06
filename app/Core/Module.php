@@ -16,6 +16,8 @@ use Eshopera\Core\Lib\Http\AjaxResponse;
 use Eshopera\Core\Lib\Events\Listener\ApplicationListener;
 use Eshopera\Core\Lib\Events\Listener\ViewListener;
 use Eshopera\Core\Lib\ApplicationInterface;
+use Eshopera\Core\Lib\Auth\Adapter\UserAdapter;
+use Eshopera\Core\Model\Facade;
 use Phalcon\DiInterface;
 use Phalcon\Http\Response;
 use Phalcon\Logger\Adapter\File as FileLogger;
@@ -24,6 +26,7 @@ use Phalcon\Cache\Frontend\Data as DataCache;
 use Phalcon\Cache\Frontend\Output as OutputCache;
 use Phalcon\Cache\Backend as CacheBackend;
 use Phalcon\Translate\Adapter\NativeArray;
+use Phalcon\Crypt;
 use Phalcon\Events\ManagerInterface;
 use Phalcon\Assets\Manager as AssetsManager;
 
@@ -45,7 +48,7 @@ class Module extends BaseModule
     {
         $config = $this->getConfig();
 
-        $this->getDI()->set('logger', function () use ($config) {
+        $di->set('logger', function () use ($config) {
             $rootDir = $this->get('application')->getRootDir();
             $logger = new FileLogger($rootDir . '/log/app-' . date('ym') . '.log');
             if (!empty($config->logger->level)) {
@@ -57,9 +60,9 @@ class Module extends BaseModule
         $di->set('db', function () use ($config) {
             $mysql = new Mysql([
                 'host' => $config->db->master->host,
-                'username' => $config->db->master->username,
+                'username' => $config->db->master->user,
                 'password' => $config->db->master->password,
-                'dbname' => $config->db->master->name,
+                'dbname' => $config->db->master->dbname,
                 'charset' => 'utf8mb4'
             ]);
             $mysql->getInternalHandler()->setAttribute(\PDO::ATTR_STRINGIFY_FETCHES, false);
@@ -112,16 +115,30 @@ class Module extends BaseModule
             return new Session($this->get('request'), $config['session']);
         }, true);
 
-        $di->set('user', function () {
-            return new Identity('__user');
-        }, true);
-
         $di->set('translate', function () {
             $rootDir = $this->get('application')->getRootDir();
             require_once($rootDir . '/temp/translate/cs.php');
             return new NativeArray([
                 'content' => $TRANSLATE_CS
             ]);
+        }, true);
+
+        $di->set('crypt', function () use ($config) {
+            $crypt = new Crypt();
+            $crypt->setKey($config->secret);
+            return $crypt;
+        });
+
+        $di->set('user', function () {
+            return new Identity('__user');
+        }, true);
+
+        $di->set('auth', function () {
+            return new UserAdapter($this->get('coreUserFacade'), $this->get('translate'));
+        }, true);
+
+        $di->set('coreUserFacade', function () {
+            return new Facade\UserFacade($this);
         }, true);
     }
 
