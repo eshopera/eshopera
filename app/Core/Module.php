@@ -29,6 +29,7 @@ use Phalcon\Translate\Adapter\NativeArray;
 use Phalcon\Crypt;
 use Phalcon\Events\ManagerInterface;
 use Phalcon\Assets\Manager as AssetsManager;
+use Phalcon\Assets\Filters\Cssmin;
 
 /**
  * Core module
@@ -180,7 +181,17 @@ class Module extends BaseModule
      */
     private function registerBackendAssets(AssetsManager $assetsManager)
     {
+        $dir = $this->getDir();
 
+        $assetsManager->collection('css')
+            ->addCss('app/Core/resources/backend/css/font-awesome.min.css', false)
+            ->addCss('app/Core/resources/backend/css/style.css', true);
+
+        $assetsManager->collection('js')
+            ->addJs('vendor/components/jquery/jquery.min.js', true, false)
+            ->addJs('vendor/twbs/bootstrap/docs/assets/js/vendor/tether.min.js', true, false)
+            ->addJs('vendor/twbs/bootstrap/dist/js/bootstrap.min.js', true, false)
+            ->addJs('app/Core/resources/backend/js/app.js', true, true);
     }
 
     /**

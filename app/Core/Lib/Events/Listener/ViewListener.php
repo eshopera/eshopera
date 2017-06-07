@@ -12,6 +12,7 @@ namespace Eshopera\Core\Lib\Events\Listener;
 use Eshopera\Core\Lib\ApplicationInterface;
 use Phalcon\Events\Event;
 use Phalcon\Mvc\View;
+use Phalcon\Assets\Filters;
 
 /**
  * Listener for view events
@@ -53,10 +54,34 @@ class ViewListener
 
         $modules = $this->application->getAppModules();
         $context = $this->application->getContext();
+        $assetsConfig = $this->application->getConfig()->assets;
+        $rootDir = $this->application->getRootDir();
         $assets = $di->get('assets');
+
+        $css = $assets->collection('css')
+            ->setPrefix($assetsConfig->prefix)
+            ->setSourcePath($rootDir . '/')
+            ->setTargetPath($rootDir . '/public/static/css/app-' . $assetsConfig->cssVersion . '.css')
+            ->setTargetUri('css/app-' . $assetsConfig->cssVersion . '.css')
+            ->join(true);
+
+        $js = $assets->collection('js')
+            ->setPrefix($assetsConfig->prefix)
+            ->setSourcePath($rootDir . '/')
+            ->setTargetPath($rootDir . '/public/static/js/app-' . $assetsConfig->jsVersion . '.js')
+            ->setTargetUri('js/app-' . $assetsConfig->jsVersion . '.js')
+            ->join(true);
 
         foreach ($modules as $module) {
             $module->registerAssets($assets, $context);
+        }
+
+        if (empty($assetsConfig->minimize)) {
+            $css->addFilter(new Filters\None());
+            $js->addFilter(new Filters\None());
+        } else {
+            $css->addFilter(new Filters\Cssmin());
+            $js->addFilter(new Filters\Jsmin());
         }
 
         $tag = $di->get('tag');

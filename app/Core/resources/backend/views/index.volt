@@ -9,10 +9,12 @@
         <meta name="description" content="">
         <meta name="keyword" content="">
         {{ get_title() }}
+        {{ assets.outputCss('css') }}
     </head>
 
     <body class="{{ bodyClass }}">
         {{ content() }}
+        {{ assets.outputJs('js') }}
     </body>
 
 </html>

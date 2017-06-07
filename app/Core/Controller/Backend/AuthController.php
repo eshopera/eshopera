@@ -11,6 +11,7 @@ namespace Eshopera\Core\Controller\Backend;
 
 use Eshopera\Core\Lib\Mvc\BackendController;
 use Eshopera\Core\Form\Backend\LoginForm;
+use Eshopera\Core\Form\Backend\ForgottenPasswordForm;
 use Eshopera\Core\Lib\Exception\AuthException;
 
 /**
@@ -35,7 +36,7 @@ class AuthController extends BackendController
         $back = $this->request->get('back');
 
         $form = new LoginForm();
-        $form->setAction($this->url->get('/core/auth'));
+        $form->setAction($this->url->get('core/auth'));
         $form->get('username')->setDefault($username);
         $form->get('back')->setDefault($back);
 
@@ -52,16 +53,6 @@ class AuthController extends BackendController
         $this->view->bodyClass = 'app flex-row align-items-center';
 
         $this->tag->setTitle($this->translate->t('CORE_AUTH_LOGIN_TITLE'));
-    }
-
-    /**
-     * User logout
-     */
-    public function logoutAction()
-    {
-        $this->getDI()->get('user')->clear();
-        $this->session->regenerateId(true);
-        return $this->response->redirect($this->url->get('/core/auth'));
     }
 
     /**
@@ -90,5 +81,42 @@ class AuthController extends BackendController
         $this->getDI()->get('user')->fill($user);
 
         return true;
+    }
+
+    /**
+     * User logout
+     */
+    public function logoutAction()
+    {
+        $this->getDI()->get('user')->clear();
+        $this->session->regenerateId(true);
+        return $this->response->redirect($this->url->get('core/auth'), true);
+    }
+
+    /**
+     * Forgotten password
+     */
+    public function forgotAction()
+    {
+        if ($this->user->isLoggedIn()) {
+            return $this->response->redirect($this->url->get(''), true);
+        }
+
+        $form = new ForgottenPasswordForm();
+        $form->setAction($this->url->get('core/auth/forgot'));
+
+        if ($this->request->isPost() && $form->isValid($this->request->getPost(), new \stdClass(), true)) {
+            if ($this->handleForgot($form)) {
+                return $this->response->redirect($this->url->get('core/auth'), true);
+            }
+        }
+
+        $config = $this->getDI()->get('application')->getConfig();
+
+        $this->view->appName = $config->name;
+        $this->view->form = $form;
+        $this->view->bodyClass = 'app flex-row align-items-center';
+
+        $this->tag->setTitle($this->translate->t('CORE_AUTH_FORGOT_TITLE'));
     }
 }

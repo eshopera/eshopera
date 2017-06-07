@@ -71,6 +71,7 @@ final class BackendApplication extends Application implements ApplicationInterfa
             }
             $view->setViewsDir($dirs);
             $view->setEventsManager($this->getEventsManager());
+            $view->disableLevel([View::LEVEL_LAYOUT => true]);
             $view->registerEngines([
                 '.volt' => function ($view, $di) use ($cfg) {
                     $volt = new Volt($view, $di);

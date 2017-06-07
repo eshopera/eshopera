@@ -1,4 +1,4 @@
-{% set dismiss = 'close' %}
+{% set dismiss = _('CORE_CLOSE') %}
 {% if flashSession.has('success') %}
     <div class="alert alert-success alert-dismissible" role="alert">
         <button type="button" class="close" data-dismiss="alert" title="{{ dismiss }}" aria-label="{{ dismiss }}">

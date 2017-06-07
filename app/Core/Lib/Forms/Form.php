@@ -96,7 +96,7 @@ abstract class Form extends PhalconForm
      */
     public function csrf($fresh = false)
     {
-        return '<div class="hidden-xs-up">'
+        return '<div class="collapse">'
             . '<input type="text" name="' . self::CSRF_KEY_BLANK . '" value="" class="form-control">'
             . '<input type="hidden" name="' . $this->security->getTokenKey($fresh) . '" value="' . $this->security->getToken($fresh) . '">'
             . '</div>';
@@ -135,7 +135,7 @@ abstract class Form extends PhalconForm
         }
 
         $this->flashSession->error(
-            $this->translate->t('CORE_AUTH_INVALID_CSRF_TOKEN')
+            $this->translate->t('CORE_FORM_INVALID_CSRF_TOKEN')
         );
 
         return false;
