@@ -9,7 +9,7 @@
 
 namespace Eshopera\Core;
 
-use Eshopera\Core\Lib\Application\BaseModule;
+use Eshopera\Core\Lib\Application\Module\BaseModule;
 use Eshopera\Core\Lib\DI\Service\Session;
 use Eshopera\Core\Lib\DI\Service\Identity;
 use Eshopera\Core\Lib\Http\AjaxResponse;

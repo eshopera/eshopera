@@ -78,7 +78,7 @@ final class BackendApplication extends Application implements ApplicationInterfa
                     $volt->setOptions([
                         'compiledPath' => (empty($cfg->cacheDir) ? ROOT_DIR . '/temp/volt/' : $cfg->cacheDir),
                         'compiledSeparator' => '_',
-                        'compileAlways' => (empty($cfg->compileAlways) ? false : $cfg->compileAlways),
+                        'compileAlways' => (empty($cfg->compileAlways) ? true : $cfg->compileAlways),
                         'stat' => true
                     ]);
 

@@ -9,7 +9,7 @@
 
 namespace Eshopera\Catalog;
 
-use Eshopera\Core\Lib\Application\BaseModule;
+use Eshopera\Core\Lib\Application\Module\BaseModule;
 
 /**
  * Product catalog module

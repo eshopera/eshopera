@@ -7,21 +7,21 @@
  * Written by David Hubner <david.hubner@gmail.com>
  */
 
-namespace Eshopera\Core\Controller\Backend;
+namespace Eshopera\Core\Lib\UI\Component;
 
-use Eshopera\Core\Lib\Mvc\Controller\BackendController;
+use Eshopera\Core\Lib\UI\Component;
 
 /**
- * Backend error controller
+ * Data grid UI component
  */
-class ErrorController extends BackendController
+class DataGrid extends Component
 {
 
     /**
-     * No matching route found
+     * {@inheritdoc}
      */
-    public function notFoundAction()
+    public function render()
     {
-        $this->view->pick('core/index/index');
+
     }
 }

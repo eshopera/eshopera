@@ -7,14 +7,12 @@
  * Written by David Hubner <david.hubner@gmail.com>
  */
 
-namespace Eshopera\Core\Lib\Mvc;
-
-use Phalcon\Mvc\ModelInterface;
+namespace Eshopera\Core\Lib\Mvc\Model;
 
 /**
  * Validation interface for model
  */
-interface ExtendedModelInterface extends ModelInterface
+interface ValidableInterface
 {
 
     /**

@@ -9,7 +9,7 @@
 
 namespace Eshopera\Core\Controller\Backend;
 
-use Eshopera\Core\Lib\Mvc\BackendController;
+use Eshopera\Core\Lib\Mvc\Controller\BackendController;
 
 /**
  * Backend default controller
@@ -19,6 +19,6 @@ class IndexController extends BackendController
 
     public function indexAction()
     {
-
+        $this->view->bodyClass = 'app header-fixed sidebar-fixed aside-menu-fixed aside-menu-hidden';
     }
 }

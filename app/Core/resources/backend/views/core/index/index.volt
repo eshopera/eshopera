@@ -1,1 +1,1 @@
-test
+{% extends 'core/layout.volt' %}

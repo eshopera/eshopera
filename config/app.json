@@ -1,5 +1,6 @@
 {
     "name": "Eshopera",
+    "secret": "8Ru-5cMaxW",
     "template": "default",
     "backend": {
         "baseUri": "/admin/"
@@ -27,9 +28,9 @@
         }
     },
     "assets": {
+        "prefix": "https://eshopera.dev/static/",
         "jsVersion": "1",
         "cssVersion": "1",
-        "join": true,
         "minimize": true
     }
 }

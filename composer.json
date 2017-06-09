@@ -26,7 +26,8 @@
         "ext-phalcon": "^3.0",
         "phalcon/incubator": "^3.0",
         "davihu/phalcon-ext": "@dev",
-        "twbs/bootstrap": "4.0.0-alpha.6"
+        "twbs/bootstrap": "4.0.0-alpha.6",
+        "components/jquery": "^3.2"
     },
     "require-dev": {
 

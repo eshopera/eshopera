@@ -7,7 +7,7 @@
  * Written by David Hubner <david.hubner@gmail.com>
  */
 
-namespace Eshopera\Core\Lib\Mvc;
+namespace Eshopera\Core\Lib\Mvc\Model;
 
 use Phalcon\Mvc\Model;
 use Phalcon\Validation;
@@ -15,7 +15,7 @@ use Phalcon\Validation;
 /**
  * Base model abstraction for all eshopera models
  */
-abstract class BaseModel extends Model implements ExtendedModelInterface
+abstract class BaseModel extends Model implements ValidableInterface
 {
 
     /**

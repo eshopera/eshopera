@@ -7,7 +7,7 @@
  * Written by David Hubner <david.hubner@gmail.com>
  */
 
-namespace Eshopera\Core\Lib\Mvc;
+namespace Eshopera\Core\Lib\Mvc\Controller;
 
 use Phalcon\Mvc\Controller;
 use Phalcon\Mvc\DispatcherInterface;

@@ -9,7 +9,7 @@
 
 namespace Eshopera\Core\Controller\Backend;
 
-use Eshopera\Core\Lib\Mvc\BackendController;
+use Eshopera\Core\Lib\Mvc\Controller\BackendController;
 use Eshopera\Core\Form\Backend\LoginForm;
 use Eshopera\Core\Form\Backend\ForgottenPasswordForm;
 use Eshopera\Core\Lib\Exception\AuthException;

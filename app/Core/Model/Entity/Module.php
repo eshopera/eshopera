@@ -9,7 +9,7 @@
 
 namespace Eshopera\Core\Model\Entity;
 
-use Eshopera\Core\Lib\Mvc\BaseModel;
+use Eshopera\Core\Lib\Mvc\Model\BaseModel;
 use Phalcon\Db\Column;
 use Phalcon\Mvc\Model\MetaData;
 use Phalcon\Mvc\Model\Behavior\Timestampable;

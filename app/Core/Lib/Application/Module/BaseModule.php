@@ -7,8 +7,9 @@
  * Written by David Hubner <david.hubner@gmail.com>
  */
 
-namespace Eshopera\Core\Lib\Application;
+namespace Eshopera\Core\Lib\Application\Module;
 
+use Eshopera\Core\Lib\Application\ModuleInterface;
 use Eshopera\Core\Lib\ApplicationInterface;
 use Phalcon\Di\InjectionAwareInterface;
 use Phalcon\Config;
