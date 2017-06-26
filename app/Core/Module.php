@@ -17,6 +17,9 @@ use Eshopera\Core\Lib\Events\Listener\ApplicationListener;
 use Eshopera\Core\Lib\Events\Listener\ViewListener;
 use Eshopera\Core\Lib\ApplicationInterface;
 use Eshopera\Core\Lib\Auth\Adapter\UserAdapter;
+use Eshopera\Core\Lib\UI\Manager as UIManager;
+use Eshopera\Core\Lib\UI\Component\Navigation;
+use Eshopera\Core\Lib\UI\Component;
 use Eshopera\Core\Model\Facade;
 use Phalcon\DiInterface;
 use Phalcon\Http\Response;
@@ -46,6 +49,20 @@ class Module extends BaseModule
      * {@inheritdoc}
      */
     public function registerServices(DiInterface $di, string $appContext)
+    {
+        $this->registerSharedServices($di);
+        if ($appContext == ApplicationInterface::CONTEXT_FRONTEND) {
+            $this->registerFrontendServices($di);
+        } elseif ($appContext == ApplicationInterface::CONTEXT_BACKEND) {
+            $this->registerBackendServices($di);
+        }
+    }
+
+    /**
+     * Registers shared services for all contexts
+     * @param \Phalcon\DiInterface $di
+     */
+    private function registerSharedServices(DiInterface $di)
     {
         $config = $this->getConfig();
 
@@ -141,6 +158,30 @@ class Module extends BaseModule
         $di->set('coreUserFacade', function () {
             return new Facade\UserFacade($this);
         }, true);
+
+        $di->set('ui', function () {
+            $manager = new UIManager();
+            $manager->setEventsManager($this->get('eventsManager'));
+            return $manager;
+        }, true);
+    }
+
+    /**
+     * Registers frontend services
+     * @param \Phalcon\DiInterface $di
+     */
+    private function registerFrontendServices(DiInterface $di)
+    {
+
+    }
+
+    /**
+     * Registers backend services
+     * @param \Phalcon\DiInterface $di
+     */
+    private function registerBackendServices(DiInterface $di)
+    {
+
     }
 
     /**
@@ -152,6 +193,30 @@ class Module extends BaseModule
 
         $eventsManager->attach('application', new ApplicationListener($di->get('dispatcher')));
         $eventsManager->attach('view', new ViewListener($di->get('application')));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function registerUI(UIManager $uiManager, string $appContext)
+    {
+        $uiManager->set('menu', function () {
+            return new Component\Navigation(['id' => 'mainMenu']);
+        });
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function registerMenu(Navigation $menu, string $appContext)
+    {
+        $translate = $this->getDI()->get('translate');
+        $menu->addSection('settings', $translate->t('CORE_MENU_SETTINGS'))
+            ->setIcon('fa fa-cog')
+            ->setOpen();
+        $menu['settings']->addItem($this->url->get('core/user'), $translate->t('CORE_MENU_USERS'))
+            ->setIcon('fa fa-user')
+            ->setActive();
     }
 
     /**
@@ -181,8 +246,6 @@ class Module extends BaseModule
      */
     private function registerBackendAssets(AssetsManager $assetsManager)
     {
-        $dir = $this->getDir();
-
         $assetsManager->collection('css')
             ->addCss('app/Core/resources/backend/css/font-awesome.min.css', false)
             ->addCss('app/Core/resources/backend/css/style.css', true);

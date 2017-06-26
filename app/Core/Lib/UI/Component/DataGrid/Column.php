@@ -17,6 +17,8 @@ use Eshopera\Core\Lib\UI\Component;
 abstract class Column extends Component
 {
 
+    use Component\Traits\CssClassTrait;
+
     const TYPE = 'unknown';
 
     /**
@@ -27,7 +29,7 @@ abstract class Column extends Component
     /**
      * @var string - column label
      */
-    protected $label;
+    public $label;
 
     /**
      * @var string - column value
@@ -40,19 +42,14 @@ abstract class Column extends Component
     protected $query;
 
     /**
-     * @var string - additional CSS classes
-     */
-    protected $css;
-
-    /**
      * @var array - binding filters
      */
-    protected $filters = [];
+    protected $filters = ['string'];
 
     /**
      * @var bool - default data grid visibility
      */
-    protected $show = true;
+    public $show = true;
 
     /**
      * @var bool - allow advanced filter search
@@ -62,7 +59,7 @@ abstract class Column extends Component
     /**
      * @var bool - allow sorting
      */
-    protected $sortable = true;
+    public $sortable = true;
 
     /**
      * @var bool - allow quick search

@@ -9,7 +9,8 @@
 
 namespace Eshopera\Core\Lib\Application;
 
-//use Phalcon\Mvc\ModuleDefinitionInterface;
+use Eshopera\Core\Lib\UI\Manager as UIManager;
+use Eshopera\Core\Lib\UI\Component\Navigation;
 use Phalcon\DiInterface;
 use Phalcon\Events\ManagerInterface;
 use Phalcon\Mvc\RouterInterface;
@@ -91,6 +92,20 @@ interface ModuleInterface
      * @param string $appContext - application context
      */
     public function registerAssets(AssetsManager $assetsManager, string $appContext);
+
+    /**
+     * Register UI components
+     * @param \Eshopera\Core\Lib\UI\Manager $uiManager
+     * @param string $appContext - application context
+     */
+    public function registerUI(UIManager $uiManager, string $appContext);
+
+    /**
+     * Register menu items
+     * @param \Eshopera\Core\Lib\UI\Component\Navigation $menu
+     * @param string $appContext - application context
+     */
+    public function registerMenu(Navigation $menu, string $appContext);
 
     /**
      * Gets module installer

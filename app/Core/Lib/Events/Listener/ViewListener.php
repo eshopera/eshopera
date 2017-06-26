@@ -48,12 +48,18 @@ class ViewListener
 
         $view->cdn = '/static';
 
+        $modules = $this->application->getAppModules();
+        $context = $this->application->getContext();
+        $ui = $di->get('ui');
+
+        foreach ($modules as $module) {
+            $module->registerUI($ui, $context);
+        }
+
         if ($di->get('request')->isAjax()) {
             return true;
         }
 
-        $modules = $this->application->getAppModules();
-        $context = $this->application->getContext();
         $assetsConfig = $this->application->getConfig()->assets;
         $rootDir = $this->application->getRootDir();
         $assets = $di->get('assets');
@@ -74,6 +80,7 @@ class ViewListener
 
         foreach ($modules as $module) {
             $module->registerAssets($assets, $context);
+            $module->registerMenu($ui->get('menu'), $context);
         }
 
         if (empty($assetsConfig->minimize)) {

@@ -15,7 +15,7 @@ use Phalcon\Mvc\DispatcherInterface;
 /**
  * Backend base controller
  */
-class BackendController extends Controller
+abstract class BackendController extends Controller
 {
 
     /**

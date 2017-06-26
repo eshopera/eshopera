@@ -11,7 +11,9 @@ namespace Eshopera\Core\Lib\Application\Module;
 
 use Eshopera\Core\Lib\Application\ModuleInterface;
 use Eshopera\Core\Lib\ApplicationInterface;
-use Phalcon\Di\InjectionAwareInterface;
+use Eshopera\Core\Lib\UI\Manager as UIManager;
+use Eshopera\Core\Lib\UI\Component\Navigation;
+use Phalcon\Di\Injectable;
 use Phalcon\Config;
 use Phalcon\DiInterface;
 use Phalcon\Events\ManagerInterface;
@@ -22,7 +24,7 @@ use Phalcon\Text;
 /**
  * Abstract module for creating eshopera modules
  */
-abstract class BaseModule implements ModuleInterface, InjectionAwareInterface
+abstract class BaseModule extends Injectable implements ModuleInterface
 {
 
     const HAS_FRONTEND = false;
@@ -45,11 +47,6 @@ abstract class BaseModule implements ModuleInterface, InjectionAwareInterface
     protected $config;
 
     /**
-     * @var \Phalcon\DiInterface
-     */
-    protected $di;
-
-    /**
      * Create new module
      * @param string $alias
      * @param \Phalcon\Config $config
@@ -59,32 +56,12 @@ abstract class BaseModule implements ModuleInterface, InjectionAwareInterface
     {
         $this->alias = $alias;
         $this->config = $config;
-        $this->di = $di;
+        $this->setDI($di);
 
         $ns = explode('\\', static::class);
         array_pop($ns);
 
         $this->namespace = implode('\\', $ns);
-    }
-
-    /**
-     * Returns the internal dependency injector
-     * @return \Phalcon\DiInterface
-     */
-    public function getDI()
-    {
-        return $this->di;
-    }
-
-    /**
-     * Sets the dependency injector
-     * @param  \Phalcon\DiInterface $di
-     * @return self
-     */
-    public function setDI(DiInterface $di)
-    {
-        $this->di = $di;
-        return $this;
     }
 
     /**
@@ -173,7 +150,7 @@ abstract class BaseModule implements ModuleInterface, InjectionAwareInterface
     public function registerRoutes(RouterInterface $router, string $appContext)
     {
         if ($appContext == ApplicationInterface::CONTEXT_BACKEND) {
-            $basePath = $this->di->get('application')->getBasePath();
+            $basePath = $this->getDI()->get('application')->getBasePath();
             $module = Text::uncamelize($this->alias, '-');
             $namespace = $this->namespace . '\\Controller\\Backend';
             $router->add($basePath . $module, [
@@ -205,6 +182,22 @@ abstract class BaseModule implements ModuleInterface, InjectionAwareInterface
      * {@inheritdoc}
      */
     public function registerAssets(AssetsManager $assetsManager, string $appContext)
+    {
+
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function registerUI(UIManager $uiManager, string $appContext)
+    {
+
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function registerMenu(Navigation $menu, string $appContext)
     {
 
     }
