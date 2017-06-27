@@ -17,8 +17,6 @@ use Eshopera\Core\Lib\UI\Component;
 abstract class Column extends Component
 {
 
-    use Component\Traits\CssClassTrait;
-
     const TYPE = 'unknown';
 
     /**

@@ -1,0 +1,1 @@
+{% extends 'core/layout/data-grid.volt' %}

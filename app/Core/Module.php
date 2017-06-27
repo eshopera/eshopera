@@ -12,6 +12,7 @@ namespace Eshopera\Core;
 use Eshopera\Core\Lib\Application\Module\BaseModule;
 use Eshopera\Core\Lib\DI\Service\Session;
 use Eshopera\Core\Lib\DI\Service\Identity;
+use Eshopera\Core\Lib\DI\Service\DataGridFactory;
 use Eshopera\Core\Lib\Http\AjaxResponse;
 use Eshopera\Core\Lib\Events\Listener\ApplicationListener;
 use Eshopera\Core\Lib\Events\Listener\ViewListener;
@@ -32,7 +33,6 @@ use Phalcon\Translate\Adapter\NativeArray;
 use Phalcon\Crypt;
 use Phalcon\Events\ManagerInterface;
 use Phalcon\Assets\Manager as AssetsManager;
-use Phalcon\Assets\Filters\Cssmin;
 
 /**
  * Core module
@@ -152,11 +152,15 @@ class Module extends BaseModule
         }, true);
 
         $di->set('auth', function () {
-            return new UserAdapter($this->get('coreUserFacade'), $this->get('translate'));
+            return new UserAdapter($this->get('facadeCoreUser'), $this->get('translate'));
         }, true);
 
-        $di->set('coreUserFacade', function () {
+        $di->set('facadeCoreUser', function () {
             return new Facade\UserFacade($this);
+        }, true);
+
+        $di->set('dataGridFactory', function () {
+            return new DataGridFactory($this->get('application'));
         }, true);
 
         $di->set('ui', function () {
@@ -203,6 +207,10 @@ class Module extends BaseModule
         $uiManager->set('menu', function () {
             return new Component\Navigation(['id' => 'mainMenu']);
         });
+
+        $uiManager->set('breadcrumb', function () {
+            return new Component\Breadcrumb();
+        });
     }
 
     /**
@@ -211,12 +219,10 @@ class Module extends BaseModule
     public function registerMenu(Navigation $menu, string $appContext)
     {
         $translate = $this->getDI()->get('translate');
-        $menu->addSection('settings', $translate->t('CORE_MENU_SETTINGS'))
-            ->setIcon('fa fa-cog')
-            ->setOpen();
-        $menu['settings']->addItem($this->url->get('core/user'), $translate->t('CORE_MENU_USERS'))
-            ->setIcon('fa fa-user')
-            ->setActive();
+        $menu->addSection($translate->t('CORE_NAV_SETTINGS'), 'settings')
+            ->setIcon('fa fa-cog');
+        $menu['settings']->addItem($this->url->get('core/user'), $translate->t('CORE_USER'), 'core-user')
+            ->setIcon('fa fa-user');
     }
 
     /**

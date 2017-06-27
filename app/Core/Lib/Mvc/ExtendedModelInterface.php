@@ -27,7 +27,7 @@ interface ExtendedModelInterface extends ModelInterface
      * Finds first record by string representation of primary key
      * @param  string $pk
      * @param  bool $forUpdate - default false
-     * @return mixed
+     * @return \Eshopera\Core\Lib\Mvc\Model\BaseModel | null
      */
     public static function findFirstByPk(string $pk, bool $forUpdate = false);
 }

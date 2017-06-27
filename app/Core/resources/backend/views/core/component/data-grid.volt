@@ -1,9 +1,11 @@
 <table{{ component.attributes() }}>
     <thead>
         <tr>
-            {% for column in component %}
+            {% for column in component.getColumns() %}
                 {% if column.show %}
-                    {{ item.label }}
+                    <th>
+                        {{ column.label }}
+                    </th>
                 {% endif %}
             {% endfor %}
         </tr>

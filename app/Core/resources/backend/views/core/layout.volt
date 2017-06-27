@@ -1,6 +1,6 @@
 <header class="app-header navbar">
     <button class="navbar-toggler mobile-sidebar-toggler d-lg-none" type="button">&#9776;</button>
-    <a class="navbar-brand" href="#"></a>
+    <a class="navbar-brand" href="{{ url.get('') }}"></a>
     <ul class="nav navbar-nav d-md-down-none">
         <li class="nav-item">
             <a class="nav-link navbar-toggler sidebar-toggler" href="#">&#9776;</a>
@@ -22,8 +22,12 @@
 
     <!-- Main content -->
     <main class="main">
+        {% block breadcrumb %}
+            {{ ui.breadcrumb.render() }}
+        {% endblock %}
         <div class="container-fluid">
-
+            {% block content %}
+            {% endblock %}
         </div>
     </main>
 </div>

@@ -18,8 +18,6 @@ use Eshopera\Core\Lib\UI\Component\DataGrid\Column;
 abstract class DataGrid extends Component
 {
 
-    use Traits\AttributesTrait;
-
     const DEFAULT_TEMPLATE = 'core/component/data-grid';
 
     /**
@@ -44,12 +42,12 @@ abstract class DataGrid extends Component
 
     /**
      * Creates new data grid component
-     * @param  array $attributes - default NULL
+     * @param  array $attributes - default null
      */
-    public function __construct(array $attributes = NULL)
+    public function __construct(array $attributes = null)
     {
         $this->initialize();
-        $this->setAttribute('class', 'data-grid table');
+        $this->setAttribute('class', 'table');
         if ($attributes) {
             $this->setAttributes($attributes);
         }
@@ -64,7 +62,7 @@ abstract class DataGrid extends Component
      * Adds data grid text column
      * @param  string $id
      * @param  string $label
-     * @param  array $attributes - default NULL
+     * @param  array $attributes - default null
      * @return \Eshopera\Core\Lib\UI\Component\DataGrid\Column\TextColumn
      */
     public function addTextColumn(string $id, string $label, array $attributes = null)
@@ -76,7 +74,7 @@ abstract class DataGrid extends Component
      * Adds data grid text area column
      * @param  string $id
      * @param  string $label
-     * @param  array $attributes - default NULL
+     * @param  array $attributes - default null
      * @return \Eshopera\Core\Lib\UI\Component\DataGrid\Column\TextareaColumn
      */
     public function addTextareaColumn(string $id, string $label, array $attributes = null)
@@ -88,7 +86,7 @@ abstract class DataGrid extends Component
      * Adds data grid number column
      * @param  string $id
      * @param  string $label
-     * @param  array $attributes - default NULL
+     * @param  array $attributes - default null
      * @return \Eshopera\Core\Lib\UI\Component\DataGrid\Column\NumberColumn
      */
     public function addNumberColumn(string $id, string $label, array $attributes = null)
@@ -100,7 +98,7 @@ abstract class DataGrid extends Component
      * Adds data grid date column
      * @param  string $id
      * @param  string $label
-     * @param  array $attributes - default NULL
+     * @param  array $attributes - default null
      * @return \Eshopera\Core\Lib\UI\Component\DataGrid\Column\DateColumn
      */
     public function addDateColumn(string $id, string $label, array $attributes = null)
@@ -112,7 +110,7 @@ abstract class DataGrid extends Component
      * Adds data grid select box column
      * @param  string $id
      * @param  string $label
-     * @param  array $attributes - default NULL
+     * @param  array $attributes - default null
      * @return \Eshopera\Core\Lib\UI\Component\DataGrid\Column\CheckboxColumn
      */
     public function addSelectColumn(string $id, string $label, array $attributes = null)
@@ -124,7 +122,7 @@ abstract class DataGrid extends Component
      * Adds data grid check box column
      * @param  string $id
      * @param  string $label
-     * @param  array $attributes - default NULL
+     * @param  array $attributes - default null
      * @return \Eshopera\Core\Lib\UI\Component\DataGrid\Column\CheckboxColumn
      */
     public function addCheckboxColumn(string $id, string $label, array $attributes = null)
@@ -136,7 +134,7 @@ abstract class DataGrid extends Component
      * Adds data grid media column
      * @param  string $id
      * @param  string $label
-     * @param  array $attributes - default NULL
+     * @param  array $attributes - default null
      * @return \Eshopera\Core\Lib\UI\Component\DataGrid\Column\MediaColumn
      */
     public function addMediaColumn(string $id, string $label, array $attributes = null)
@@ -177,5 +175,14 @@ abstract class DataGrid extends Component
         } else {
             return null;
         }
+    }
+
+    /**
+     * Gets grid columns
+     * @return array
+     */
+    public function getColumns()
+    {
+        return $this->columns;
     }
 }

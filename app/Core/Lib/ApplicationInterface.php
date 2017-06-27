@@ -59,14 +59,14 @@ interface ApplicationInterface
     /**
      * Gets application module
      * @param  string $alias
-     * @return \Eshopera\Core\Lib\Mvc\ModuleInterface | null
+     * @return \Eshopera\Core\Lib\Application\ModuleInterface | null
      */
     public function getAppModule($alias);
 
     /**
      * Gets all application modules
      * @param  string $alias
-     * @return \Eshopera\Core\Lib\Mvc\ModuleInterface[]
+     * @return \Eshopera\Core\Lib\Application\ModuleInterface[]
      */
     public function getAppModules();
 

@@ -17,9 +17,8 @@ use Eshopera\Core\Lib\UI\Component;
 class Section extends Component
 {
 
-    use Component\Traits\AttributesTrait;
-
     const DEFAULT_TEMPLATE = 'core/component/navigation/section';
+    const DEFAULT_CLASS = 'nav-item nav-dropdown';
     const DEFAULT_LINK_CLASS = 'nav-link nav-dropdown-toggle';
     const DEFAULT_ITEMS_CLASS = 'nav-dropdown-items';
 
@@ -51,17 +50,17 @@ class Section extends Component
     public function __construct(string $label, array $attributes = NULL)
     {
         $this->label = $label;
-        $this->setAttribute('class', 'nav-item nav-dropdown');
+        $this->setAttribute('class', self::DEFAULT_CLASS);
         if ($attributes) {
             $this->setAttributes($attributes);
         }
     }
 
     /**
-     * Sets section as open
+     * Sets section as active
      * @return self
      */
-    public function setOpen()
+    public function setActive()
     {
         $this->appendAttribute('class', 'open');
         return $this;
@@ -102,12 +101,12 @@ class Section extends Component
 
     /**
      * Adds navigation section
-     * @param  string $id
      * @param  string $label
+     * @param  string $id - default NULL
      * @param  array $attributes - default NULL
      * @return \Eshopera\Core\Lib\UI\Component\Navigation\Section
      */
-    public function addSection(string $id, string $label, array $attributes = null)
+    public function addSection(string $label, string $id = null, array $attributes = null)
     {
         return $this->add(new self($label, $attributes), $id);
     }
@@ -116,11 +115,12 @@ class Section extends Component
      * Adds navigation item
      * @param  string $link
      * @param  string $label
+     * @param  string $id - default NULL
      * @param  array $attributes - default NULL
      * @return \Eshopera\Core\Lib\UI\Component\Navigation\Item
      */
-    public function addItem(string $link, string $label, array $attributes = NULL)
+    public function addItem(string $link, string $label, string $id = null, array $attributes = NULL)
     {
-        return $this->add(new Item($link, $label, $attributes));
+        return $this->add(new Item($link, $label, $attributes), $id);
     }
 }

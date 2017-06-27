@@ -11,7 +11,6 @@ namespace Eshopera\Core\Lib\Mvc\Model;
 
 use Eshopera\Core\Lib\Mvc\ExtendedModelInterface;
 use Phalcon\Mvc\Model;
-use Phalcon\Mvc\Model\MetaData;
 use Phalcon\Validation;
 
 /**

@@ -41,8 +41,8 @@ trait ModulesTrait
     {
         $alias = $this->normalizeAppModuleAlias($alias);
 
-        if (isset($this->appModules[$module])) {
-            return $this->appModules[$module];
+        if (isset($this->appModules[$alias])) {
+            return $this->appModules[$alias];
         }
 
         return null;
@@ -108,10 +108,9 @@ trait ModulesTrait
             $module->registerServices($di, self::CONTEXT);
             $module->registerEventListeners($di->get('eventsManager'), self::CONTEXT);
             $module->registerRoutes($di->get('router'), self::CONTEXT);
+            $module->registerUI($di->get('ui'), self::CONTEXT);
 
             $this->appModules[$alias] = $module;
-
-            $di->set($alias . 'Module', $module, true);
         }
     }
 

@@ -7,19 +7,18 @@
  * Written by David Hubner <david.hubner@gmail.com>
  */
 
-namespace Eshopera\Core\Lib\UI\Component\Navigation;
+namespace Eshopera\Core\Lib\UI\Component\Breadcrumb;
 
 use Eshopera\Core\Lib\UI\Component;
 
 /**
- * Navigation item component
+ * Breadcrumb item component
  */
 class Item extends Component
 {
 
-    const DEFAULT_TEMPLATE = 'core/component/navigation/item';
-    const DEFAULT_CLASS = 'nav-item';
-    const DEFAULT_LINK_CLASS = 'nav-link';
+    const DEFAULT_TEMPLATE = 'core/component/breadcrumb/item';
+    const DEFAULT_CLASS = 'breadcrumb-item';
 
     /**
      * @var string
@@ -42,11 +41,6 @@ class Item extends Component
     public $icon;
 
     /**
-     * @var string
-     */
-    public $linkClass = self::DEFAULT_LINK_CLASS;
-
-    /**
      * Creates new navigation item
      * @param string $link
      * @param string $label
@@ -64,12 +58,13 @@ class Item extends Component
     }
 
     /**
-     * Sets link active
+     * Sets item inactive
      * @return self
      */
     public function setActive()
     {
         $this->active = true;
+        $this->appendAttribute('class', 'active');
         return $this;
     }
 
@@ -81,17 +76,6 @@ class Item extends Component
     public function setIcon(string $icon)
     {
         $this->icon = $icon;
-        return $this;
-    }
-
-    /**
-     * Sets item link class
-     * @param  string $class
-     * @return self
-     */
-    public function setLinkClass(string $class)
-    {
-        $this->linkClass = $class;
         return $this;
     }
 }

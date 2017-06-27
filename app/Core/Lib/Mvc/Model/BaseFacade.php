@@ -19,23 +19,12 @@ abstract class BaseFacade extends Injectable
 {
 
     /**
-     * @var \Eshopera\Core\Lib\ApplicationInterface
-     */
-    protected $application;
-
-    /**
-     * @var \Phalcon\Translate\AdapterInterface
-     */
-    protected $translate;
-
-    /**
      * Creates new facade
      * @param \Phalcon\DiInterface $di
      */
     public function __construct(DiInterface $di)
     {
         $this->setDI($di);
-        $this->application = $di->get('application');
-        $this->translate = $di->get('translate');
+        $this->setEventsManager($di->get('eventsManager'));
     }
 }

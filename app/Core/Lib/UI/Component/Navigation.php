@@ -19,15 +19,13 @@ use Eshopera\Core\Lib\UI\Component\Navigation\Item;
 class Navigation extends Component
 {
 
-    use Traits\AttributesTrait;
-
     const DEFAULT_TEMPLATE = 'core/component/navigation';
 
     /**
      * Creates navigation component
-     * @param  array $attributes - default NULL
+     * @param  array $attributes - default null
      */
-    public function __construct(array $attributes = NULL)
+    public function __construct(array $attributes = null)
     {
         $this->setAttribute('class', 'nav');
         if ($attributes) {
@@ -37,12 +35,12 @@ class Navigation extends Component
 
     /**
      * Adds navigation section
-     * @param  string $id
      * @param  string $label
-     * @param  array $attributes - default NULL
+     * @param  string $id - default null
+     * @param  array $attributes - default null
      * @return \Eshopera\Core\Lib\UI\Component\Navigation\Section
      */
-    public function addSection(string $id, string $label, array $attributes = null)
+    public function addSection(string $label, string $id = null, array $attributes = null)
     {
         return $this->add(new Section($label, $attributes), $id);
     }
@@ -51,11 +49,12 @@ class Navigation extends Component
      * Adds navigation item
      * @param  string $link
      * @param  string $label
-     * @param  array $attributes - default NULL
+     * @param  string $id - default null
+     * @param  array $attributes - default null
      * @return \Eshopera\Core\Lib\UI\Component\Navigation\Item
      */
-    public function addItem(string $link, string $label, array $attributes = NULL)
+    public function addItem(string $link, string $label, string $id = null, array $attributes = null)
     {
-        return $this->add(new Item($link, $label, $attributes));
+        return $this->add(new Item($link, $label, $attributes), $id);
     }
 }

@@ -48,10 +48,6 @@ class ViewListener
 
         $view->cdn = '/static';
 
-        $modules = $this->application->getAppModules();
-        $context = $this->application->getContext();
-        $ui = $di->get('ui');
-
         foreach ($modules as $module) {
             $module->registerUI($ui, $context);
         }
@@ -77,6 +73,10 @@ class ViewListener
             ->setTargetPath($rootDir . '/public/static/js/app-' . $assetsConfig->jsVersion . '.js')
             ->setTargetUri('js/app-' . $assetsConfig->jsVersion . '.js')
             ->join(true);
+
+        $modules = $this->application->getAppModules();
+        $context = $this->application->getContext();
+        $ui = $di->get('ui');
 
         foreach ($modules as $module) {
             $module->registerAssets($assets, $context);
